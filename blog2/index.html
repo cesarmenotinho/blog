@@ -190,5 +190,46 @@
 
         showButtonAfterDelay(43);
     </script>
+
+    <!-- Código parametro link -->
+    <script>
+    // JavaScript para adicionar o parâmetro subid a todos os links da página
+    document.addEventListener('DOMContentLoaded', function() {
+        (function() {
+            // Função para obter o parâmetro subid da URL
+            function getSubidParameter() {
+                var url = new URL(window.location.href);
+                return url.searchParams.get("tid");
+            }
+            // Captura o parâmetro subid
+            var subid = getSubidParameter();
+            
+            // Verifica se o subid não está vazio ou null
+            if (subid) {
+                // Seleciona todos os links do documento
+                var links = document.querySelectorAll('a');
+                
+                // Itera sobre os links e adiciona/modifica o parâmetro subid
+                Array.prototype.forEach.call(links, function(link) {
+                    try {
+                        // Verifica se o link é um URL válido e tem protocolo http ou https
+                        var linkUrl = new URL(link.href);
+                        
+                        // Modifica o parâmetro subid do link
+                        linkUrl.searchParams.set("tid", subid); // Adiciona/modifica o parâmetro subid
+                        link.href = linkUrl.href; // Atualiza o href do link
+                    } catch (e) {
+                        // Ignora links que não têm um formato de URL válido, como mailto, tel, etc.
+                        console.warn("URL inválida ou link especial ignorado: " + link.href);
+                    }
+                });
+                
+                console.log(links.length + " links foram atualizados com o subid: " + subid);
+            } else {
+                console.log("Parâmetro subid não encontrado na URL.");
+            }
+        })();
+    });
+    </script>
 </body>
 </html>
